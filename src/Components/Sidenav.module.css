@@ -1,0 +1,33 @@
+.sidenav {
+  grid-area: sidenav;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin: 1rem;
+}
+.sidenav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.sidenav li,
+.sidenav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidenav li {
+  aspect-ratio: 1 / 1;
+}
+.sidenav a {
+  width: 100%;
+  height: 100%;
+  max-width: 10ch;
+  text-align: center;
+  background: var(--surface);
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+}
+.sidenav a:hover {
+  border: 1px solid var(--blue);
+}

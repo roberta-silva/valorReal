@@ -1,12 +1,14 @@
 .header {
-  background: var(--bg);
-  padding: 1.25rem;
-  border-bottom: 2px solid var(--border);
   grid-area: header;
+  background: var(--bg);
+  border-bottom: 2px solid var(--border);
 }
 .nav {
+  max-width: 90rem;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
   gap: 1.25rem;
 }

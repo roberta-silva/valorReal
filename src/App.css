@@ -42,11 +42,20 @@ li {
 }
 a {
   text-decoration: none;
+  color: inherit;
 }
 .estrutura {
+  max-width: 90rem;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(140px, 200px) 1fr;
-  grid-template-areas: 
-  "header header"
-  "sidenav content";
+  grid-template-areas:
+    'header header'
+    'sidenav content';
+}
+main {
+  min-height: calc(100vh - 72px);
+  background: var(--surface);
+  grid-area: content;
+  margin-right: 1rem;
 }
