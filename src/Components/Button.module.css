@@ -1,0 +1,14 @@
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  background: var(--blue);
+  color: var(--bg);
+  transition:
+    background 0.8s ease,
+    color 0.8s ease;
+}
+.btn:hover {
+  background: var(--blue-mid);
+  color: var(--text);
+}

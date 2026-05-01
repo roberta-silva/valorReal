@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap');
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0px;
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface2: #f0f2f5;
+  --border: #e4e7ed;
+  --border2: #d0d5de;
+  --text: #111827;
+  --muted: #6b7280;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --blue-mid: #bfdbfe;
+  --red: #dc2626;
+  --red-light: #fff1f1;
+  --red-mid: #fecaca;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --green-mid: #bbf7d0;
+  --yellow: #d97706;
+  --yellow-light: #fffbeb;
+  --yellow-mid: #fde68a;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--border2) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+h1,
+h2,
+p {
+  margin: 0px;
+}
+ul,
+li {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+a {
+  text-decoration: none;
+}
+.estrutura {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  grid-template-areas: 
+  "header header"
+  "sidenav content";
+}
