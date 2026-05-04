@@ -11,3 +11,9 @@ export async function fetchIPCAMensal() {
   if (!res.ok) throw new Error('Erro ao buscar IPCA mensal');
   return res.json();
 }
+
+export async function fetchCategorias() {
+  const res = await fetch(`${BASE_URL}/categorias`);
+  if (!res.ok) throw new Error('Erro ao buscar categorias');
+  return res.json();
+}

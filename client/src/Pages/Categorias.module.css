@@ -1,0 +1,84 @@
+.categorias {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+}
+.categorias ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1rem;
+}
+.cardCategoria {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  min-width: 10rem;
+  border-radius: 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+.cardCategoria:hover {
+  border-color: var(--red-mid);
+  transform: scale(1.1);
+}
+.iconeCategoria {
+  font-size: 1.25rem;
+  padding: 1.2rem;
+  aspect-ratio: 1 / 1;
+  max-width: max-content;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+[data-categoria='Alimentação'] {
+  background-color: var(--surfase);
+  background:
+    url('../assets/alimentacao.svg') no-repeat center,
+    var(--surface);
+}
+[data-categoria='Habitação'] {
+  background:
+    url('../assets/habitacao.svg') no-repeat center,
+    var(--surface);
+}
+[data-categoria='Transportes'] {
+  background:
+    url('../assets/transporte.svg') no-repeat center,
+    var(--surface);
+}
+[data-categoria='Saúde'] {
+  background:
+    url('../assets/saude.svg') no-repeat center,
+    var(--surface);
+}
+[data-categoria='Educação'] {
+  background:
+    url('../assets/educacao.svg') no-repeat center,
+    var(--surface);
+}
+.nomeCategoria {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.percentual {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+.ano {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--muted);
+}
