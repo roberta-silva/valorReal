@@ -31,3 +31,6 @@
 .sidenav a:hover {
   border: 1px solid var(--blue);
 }
+.sidenav a:global(.active) {
+  border-color: var(--blue);
+}
