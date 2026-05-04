@@ -59,3 +59,18 @@ main {
   grid-area: content;
   margin-right: 1rem;
 }
+.titulos {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+.textos-info {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  max-width: 40ch;
+  margin-bottom: 2rem;
+  color: var(--muted);
+}

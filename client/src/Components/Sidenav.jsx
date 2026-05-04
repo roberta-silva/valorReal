@@ -6,16 +6,16 @@ const Sidenav = () => {
     <nav className={styles.sidenav}>
       <ul>
         <li>
-          <NavLink to="/">Calculadora</NavLink>
+          <NavLink to="calculadora">Calculadora</NavLink>
         </li>
         <li>
-          <NavLink to="/">Categorias</NavLink>
+          <NavLink to="categorias">Categorias</NavLink>
         </li>
         <li>
-          <NavLink to="/">Histórico</NavLink>
+          <NavLink to="historico">Histórico</NavLink>
         </li>
         <li>
-          <NavLink to="/">Como funciona</NavLink>
+          <NavLink to="como-funciona">Como funciona</NavLink>
         </li>
       </ul>
     </nav>
