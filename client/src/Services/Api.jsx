@@ -17,3 +17,9 @@ export async function fetchCategorias() {
   if (!res.ok) throw new Error('Erro ao buscar categorias');
   return res.json();
 }
+
+export async function fetchCategoriasAnual() {
+  const res = await fetch(`${BASE_URL}/categorias/anual`);
+  if (!res.ok) throw new Error('Erro ao buscar categorias anuais');
+  return res.json();
+}

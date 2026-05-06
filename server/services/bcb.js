@@ -1,8 +1,14 @@
 const dataAtual = new Date();
-const dataReferencia = new Date(dataAtual);
-dataReferencia.setFullYear(dataAtual.getFullYear() - 10);
+
+const dataInicialObj = new Date(
+  dataAtual.getFullYear() - 10,
+  0, // janeiro
+  1, // dia 1
+);
+
 const formatador = new Intl.DateTimeFormat('pt-BR');
-const dataInicial = formatador.format(dataReferencia);
+
+const dataInicial = formatador.format(dataInicialObj);
 const dataFinal = formatador.format(dataAtual);
 
 async function getIPCAMensal() {
@@ -17,18 +23,20 @@ async function getIPCAMensal() {
 async function getIPCAAnual() {
   const dados = await getIPCAMensal();
 
-  //agrupar por ano e somar
   const porAno = {};
+
   dados.forEach(({ data, valor }) => {
     const ano = data.split('/')[2];
+    const taxa = parseFloat(valor) / 100;
 
-    if (!porAno[ano]) porAno[ano] = 0;
-    porAno[ano] += parseFloat(valor);
+    if (!porAno[ano]) porAno[ano] = 1;
+
+    porAno[ano] *= 1 + taxa;
   });
 
-  return Object.entries(porAno).map(([ano, percentual]) => ({
+  return Object.entries(porAno).map(([ano, fator]) => ({
     ano: parseInt(ano),
-    percentual: parseFloat(percentual.toFixed(2)),
+    percentual: parseFloat(((fator - 1) * 100).toFixed(2)),
   }));
 }
 module.exports = { getIPCAMensal, getIPCAAnual };
