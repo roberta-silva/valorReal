@@ -9,18 +9,23 @@ import {
   Cell,
 } from 'recharts';
 import { fetchIPCAAnual } from '../Services/api';
+import Loading from './Helper/Loading';
+import ErrorMessage from './Helper/Error';
 
 const HistoricoGraphs = () => {
   const [dados, setDados] = React.useState([]);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function buscar() {
       try {
         const resultado = await fetchIPCAAnual();
         setDados(resultado);
-      } catch {
-        setError(true);
+      } catch(err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
     buscar();
@@ -32,11 +37,11 @@ const HistoricoGraphs = () => {
     return 'var(--red)';
   }
 
-  if (error) return <p>Erro ao carregar dados.</p>;
-  if (!dados.length) return <p>Carregando...</p>;
+  if (error) return <ErrorMessage message={error} />;
+  if (loading) return <Loading height="24rem" />;
 
   return (
-    <ResponsiveContainer width="98%" height={400}>
+    <ResponsiveContainer width="98%" height={360}>
       <BarChart data={dados}>
         <XAxis dataKey="ano" />
         <YAxis unit="%" />

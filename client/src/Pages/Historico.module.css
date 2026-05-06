@@ -6,7 +6,7 @@
   height: 100%;
 }
 .grafico {
-  min-height: 25rem;
+  height: 24rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;

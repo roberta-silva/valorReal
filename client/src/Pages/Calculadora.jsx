@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { fetchCategoriasAnual } from '../Services/Api';
+import React from 'react';
+import { useCategorias } from '../Hooks/useCategorias';
 import styles from './Calculadora.module.css';
+import Loading from '../Components/Helper/Loading';
+import ErrorMessage from '../Components/Helper/Error';
 
 const PRODUTOS = [
   { nome: 'kg de arroz', preco: 6.5 },
@@ -10,99 +12,77 @@ const PRODUTOS = [
 ];
 
 const Calculadora = () => {
-  const [dados, setDados] = useState([]);
-  const [error, setError] = useState(false);
-  const [valores, setValores] = useState({
+  const { dados, error, loading } = useCategorias();
+  const [valores, setValores] = React.useState({
     gastoMensal: 500,
     anoReferencia: 2020,
     projecao: 5,
   });
-  const [categoria, setCategoria] = useState(['7170']);
-  const [resultado, setResultado] = useState(null);
+  const [categoria, setCategoria] = React.useState(['7170']);
 
-  useEffect(() => {
-    async function buscar() {
-      try {
-        const resultado = await fetchCategoriasAnual();
-        setDados(resultado);
-      } catch {
-        setError(true);
-      }
-    }
-    buscar();
-  }, []);
-
-  useEffect(() => {
-    if (categoria.length === 0 || dados.length === 0) return;
+  const resultado = React.useMemo(() => {
+    if (!dados.length || !categoria.length) return null;
 
     const categoriasSelecionadas = categoria.map((id) =>
       dados.find((cat) => cat.id === id),
     );
 
-    const anoInicio = String(valores.anoReferencia);
-    const anosDisponiveis = ['2020', '2021', '2022', '2023', '2024'];
-    const anosFiltrados = anosDisponiveis.filter((ano) => ano >= anoInicio);
+    const anosFiltrados = ['2020', '2021', '2022', '2023', '2024'].filter(
+      (ano) => ano >= String(valores.anoReferencia),
+    );
 
-    const resultadosPorCategoria = categoriasSelecionadas.map((cat) => {
-      let valorCorrigido = valores.gastoMensal;
-      anosFiltrados.forEach((ano) => {
+    const resultadosPorCategoria = categoriasSelecionadas.map((cat) =>
+      anosFiltrados.reduce((val, ano) => {
         const percentual = cat.series[ano];
-        if (percentual !== undefined) {
-          valorCorrigido *= 1 + percentual / 100;
-        }
-      });
-      return valorCorrigido;
-    });
+        return percentual !== undefined ? val * (1 + percentual / 100) : val;
+      }, valores.gastoMensal),
+    );
 
     const media =
       resultadosPorCategoria.reduce((acc, val) => acc + val, 0) /
       resultadosPorCategoria.length;
-
     const valorHoje = Math.round(media);
     const diferenca = valorHoje - valores.gastoMensal;
 
     const mediaPercentualUltimoAno =
-      categoriasSelecionadas.reduce((acc, cat) => {
-        return acc + (cat.series['2024'] || 0);
-      }, 0) / categoriasSelecionadas.length;
+      categoriasSelecionadas.reduce(
+        (acc, cat) => acc + (cat.series['2024'] || 0),
+        0,
+      ) / categoriasSelecionadas.length;
 
-    let totalPerdaProjecao = 0;
     let valorProjetado = valorHoje;
-
+    let totalPerdaProjecao = 0;
     for (let i = 1; i <= valores.projecao; i++) {
       valorProjetado *= 1 + mediaPercentualUltimoAno / 100;
-      totalPerdaProjecao += Math.round(valorProjetado) - Math.round(valorHoje);
+      totalPerdaProjecao += Math.round(valorProjetado) - valorHoje;
     }
 
-    const equivalentes = PRODUTOS.map((produto) => ({
-      nome: produto.nome,
-      quantidade: Math.floor(diferenca / produto.preco),
-    }));
-
-    setResultado({
+    return {
       valorOriginal: valores.gastoMensal,
       valorHoje,
       diferenca,
       anoReferencia: valores.anoReferencia,
       totalPerdaProjecao,
-      equivalentes,
-    });
-  }, [valores, categoria, dados, setResultado]);
+      equivalentes: PRODUTOS.map((p) => ({
+        nome: p.nome,
+        quantidade: Math.floor(diferenca / p.preco),
+      })),
+    };
+  }, [dados, categoria, valores]);
 
   function handleChecked({ target }) {
-    if (target.checked) {
-      setCategoria((prev) => [...prev, target.value]);
-    } else {
-      setCategoria((prev) => prev.filter((c) => c !== target.value));
-    }
+    setCategoria((prev) =>
+      target.checked
+        ? [...prev, target.value]
+        : prev.filter((c) => c !== target.value),
+    );
   }
 
-  function handleRange({ target }) {
-    const { name, value } = target;
+  function handleRange({ target: { name, value } }) {
     setValores((prev) => ({ ...prev, [name]: Number(value) }));
   }
 
-  if (error) return <p>Erro ao carregar dados. Tente novamente.</p>;
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <section className={styles.calculadora}>
@@ -151,7 +131,6 @@ const Calculadora = () => {
                 {valores.gastoMensal}
               </span>
             </div>
-
             <div className={styles.groupRange}>
               <label className={styles.inputRange} htmlFor="anoReferencia">
                 Ano de referência
@@ -170,7 +149,6 @@ const Calculadora = () => {
                 {valores.anoReferencia}
               </span>
             </div>
-
             <div className={styles.groupRange}>
               <label className={styles.inputRange} htmlFor="projecao">
                 Horizonte de projeção
@@ -191,10 +169,11 @@ const Calculadora = () => {
             </div>
           </form>
         </div>
-
         <div className={styles.calculadoraResultado}>
           <p className={styles.rotulo}>// Resultado</p>
-          {resultado ? (
+          {loading || !resultado ? (
+            <Loading height="29rem" />
+          ) : (
             <div className={styles.resultadoInfo}>
               <span className={styles.tag}>impacto mensal estimado</span>
               <p className={styles.resultado}>+ R$ {resultado.diferenca}/mês</p>
@@ -216,10 +195,6 @@ const Calculadora = () => {
                 ))}
               </ul>
             </div>
-          ) : (
-            <p className={styles.explicacao}>
-              Selecione uma categoria e ajuste os valores para ver o impacto.
-            </p>
           )}
         </div>
       </div>

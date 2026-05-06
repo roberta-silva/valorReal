@@ -1,25 +1,26 @@
 import React from 'react';
 import { fetchCategorias } from '../Services/Api';
 import styles from './Categorias.module.css';
+import Loading from '../Components/Helper/Loading';
+import ErrorMessage from '../Components/Helper/Error';
 
 const Categorias = () => {
   const [dados, setDados] = React.useState([]);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     async function buscar() {
       try {
         const resultado = await fetchCategorias();
         setDados(resultado);
-      } catch {
-        setError(true);
+      } catch (err) {
+        setError(err.message);
       }
     }
     buscar();
   }, []);
 
-  if (error) return <p>Erro ao carregar dados.</p>;
-  if (!dados.length) return <p>Carregando...</p>;
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <section className={styles.categorias}>
@@ -30,21 +31,25 @@ const Categorias = () => {
       </p>
       <div>
         <ul>
-          {dados.map(({ nome, percentual }) => (
-            <li
-              key={nome.split(' ')[0]}
-              className={styles.cardCategoria}
-              id={nome.split(' ')[0]}
-            >
-              <span
-                data-categoria={nome.split(' ')[0]}
-                className={styles.iconeCategoria}
-              ></span>
-              <p className={styles.nomeCategoria}>{nome.split(' ')[0]}</p>
-              <span className={styles.percentual}>+ {percentual} %</span>
-              <span className={styles.ano}>// 2025</span>
-            </li>
-          ))}
+          {!dados.length ? (
+            <Loading height="12rem" />
+          ) : (
+            dados.map(({ nome, percentual }) => (
+              <li
+                key={nome.split(' ')[0]}
+                className={styles.cardCategoria}
+                id={nome.split(' ')[0]}
+              >
+                <span
+                  data-categoria={nome.split(' ')[0]}
+                  className={styles.iconeCategoria}
+                ></span>
+                <p className={styles.nomeCategoria}>{nome.split(' ')[0]}</p>
+                <span className={styles.percentual}>+ {percentual} %</span>
+                <span className={styles.ano}>// 2025</span>
+              </li>
+            ))
+          )}
         </ul>
       </div>
     </section>
