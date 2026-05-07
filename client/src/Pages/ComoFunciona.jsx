@@ -1,7 +1,12 @@
+import Head from '../Components/Helper/Head';
 import styles from './ComoFunciona.module.css';
 const ComoFunciona = () => {
   return (
     <section className={`${styles.comoFunciona} animar`}>
+      <Head
+        title="Como Funciona"
+        description="Como funciona a calculadora de inflação: uso de dados do Banco Central (IPCA) e IBGE SIDRA em tempo real para simular impacto da inflação por categoria de gasto sem cadastro."
+      />
       <h1 className="titulos">Dados reais, em tempo real</h1>
       <p className="textos-info">
         Nada de números inventados. Tudo vem direto das APIs oficiais do governo

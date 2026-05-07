@@ -3,6 +3,7 @@ import { useCategorias } from '../Hooks/useCategorias';
 import styles from './Calculadora.module.css';
 import Loading from '../Components/Helper/Loading';
 import ErrorMessage from '../Components/Helper/Error';
+import Head from '../Components/Helper/Head';
 
 const PRODUTOS = [
   { nome: 'kg de arroz', preco: 6.5 },
@@ -92,6 +93,7 @@ const Calculadora = () => {
 
   return (
     <section className={`${styles.calculadora} animar`}>
+      <Head title="Calculadora" description="Simule a inflação no seu orçamento. Descubra quanto você precisaria hoje para manter o mesmo poder de compra com base nos seus gastos mensais." />
       <div className={styles.calculadoraInfo}>
         <h1 className="titulos">Qual é o tamanho do seu déficit?</h1>
         <p className="textos-info">

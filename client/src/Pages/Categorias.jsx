@@ -3,6 +3,7 @@ import { fetchCategorias } from '../Services/Api';
 import styles from './Categorias.module.css';
 import Loading from '../Components/Helper/Loading';
 import ErrorMessage from '../Components/Helper/Error';
+import Head from '../Components/Helper/Head';
 
 function calcularAcumulado(percentuais) {
   if (!percentuais?.length) return 0;
@@ -72,6 +73,10 @@ const Categorias = () => {
   if (loading) return <Loading />;
   return (
     <section className={`${styles.categorias} animar`}>
+      <Head
+        title="Categorias"
+        description="Inflação por categoria no Brasil: percentual acumulado nos últimos 12 meses segundo o IBGE, com destaque para habitação, alimentação, saúde, transporte e educação."
+      />
       <h1 className="titulos">Onde a inflação dói mais</h1>
       <p className="textos-info">
         Nem tudo sobe igual. Nos últimos 12 meses a maior inflação foi em{' '}
@@ -79,7 +84,7 @@ const Categorias = () => {
         categorias.
       </p>
       <div>
-        <ul className='animar'>
+        <ul className="animar">
           {dadosComAcumulado.map(({ nome, acumulado }) => (
             <li
               key={nome.split(' ')[0]}
