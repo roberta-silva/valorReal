@@ -11,6 +11,12 @@ const PRODUTOS = [
   { nome: 'refeições em restaurante', preco: 32 },
 ];
 
+const formatarMoeda = (valor) =>
+  valor.toLocaleString('pt-BR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
 const Calculadora = () => {
   const { dados, error, loading } = useCategorias();
   const [valores, setValores] = React.useState({
@@ -128,7 +134,7 @@ const Calculadora = () => {
                 onChange={handleRange}
               />
               <span className={styles.valorSelecionado}>
-                {valores.gastoMensal}
+                {formatarMoeda(valores.gastoMensal)}
               </span>
             </div>
             <div className={styles.groupRange}>
@@ -176,13 +182,19 @@ const Calculadora = () => {
           ) : (
             <div className={styles.resultadoInfo}>
               <span className={styles.tag}>impacto mensal estimado</span>
-              <p className={styles.resultado}>+ R$ {resultado.diferenca}/mês</p>
+              <p className={styles.resultado}>
+                + R$ {formatarMoeda(resultado.diferenca)}/mês
+              </p>
               <p className={styles.explicacao}>
-                Você pagava <strong>R$ {resultado.valorOriginal}</strong> em{' '}
+                Você pagava{' '}
+                <strong>R$ {formatarMoeda(resultado.valorOriginal)}</strong> em{' '}
                 {resultado.anoReferencia}. Hoje precisaria de{' '}
-                <strong>R$ {resultado.valorHoje}</strong> para comprar o mesmo.
-                Em {valores.projecao} anos, a perda acumulada será de{' '}
-                <strong>R$ {resultado.totalPerdaProjecao}.</strong>
+                <strong>R$ {formatarMoeda(resultado.valorHoje)}</strong> para
+                comprar o mesmo. Em {valores.projecao} anos, a perda acumulada
+                será de{' '}
+                <strong>
+                  R$ {formatarMoeda(resultado.totalPerdaProjecao)}.
+                </strong>
               </p>
               <ul>
                 {resultado.equivalentes.map((item) => (
