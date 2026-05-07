@@ -4,9 +4,35 @@ import styles from './Categorias.module.css';
 import Loading from '../Components/Helper/Loading';
 import ErrorMessage from '../Components/Helper/Error';
 
+function calcularAcumulado(percentuais) {
+  if (!percentuais?.length) return 0;
+  return percentuais[percentuais.length - 1].percentual;
+}
+
+function formatarPeriodo(periodo) {
+  const ano = periodo.slice(0, 4);
+  const mes = periodo.slice(4, 6);
+  const meses = [
+    'jan',
+    'fev',
+    'mar',
+    'abr',
+    'mai',
+    'jun',
+    'jul',
+    'ago',
+    'set',
+    'out',
+    'nov',
+    'dez',
+  ];
+  return `${meses[+mes - 1]}/${ano}`;
+}
+
 const Categorias = () => {
   const [dados, setDados] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function buscar() {
@@ -15,41 +41,62 @@ const Categorias = () => {
         setDados(resultado);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
     buscar();
   }, []);
 
-  if (error) return <ErrorMessage message={error} />;
+  const dadosComAcumulado = React.useMemo(
+    () =>
+      dados.map((categoria) => ({
+        ...categoria,
+        acumulado: calcularAcumulado(categoria.percentuais),
+      })),
+    [dados],
+  );
 
+  const maiorInflacao = React.useMemo(
+    () =>
+      dadosComAcumulado.length
+        ? dadosComAcumulado.reduce((maior, atual) =>
+            atual.acumulado > maior.acumulado ? atual : maior,
+          )
+        : null,
+    [dadosComAcumulado],
+  );
+  const ultimoPeriodo = dadosComAcumulado[0]?.percentuais?.at(-1)?.periodo;
+
+  if (error) return <ErrorMessage message={error} />;
+  if (loading) return <Loading />;
   return (
     <section className={styles.categorias}>
       <h1 className="titulos">Onde a inflação dói mais</h1>
       <p className="textos-info">
-        Nem tudo sobe igual. A inflação de alimentos costuma ser o dobro da
-        média. Veja o impacto pelas principais categorias.
+        Nem tudo sobe igual. Nos últimos 12 meses a maior inflação foi em{' '}
+        {maiorInflacao && maiorInflacao.nome}. Veja o impacto pelas principais
+        categorias.
       </p>
       <div>
         <ul>
-          {!dados.length ? (
-            <Loading height="12rem" />
-          ) : (
-            dados.map(({ nome, percentual }) => (
-              <li
-                key={nome.split(' ')[0]}
-                className={styles.cardCategoria}
-                id={nome.split(' ')[0]}
-              >
-                <span
-                  data-categoria={nome.split(' ')[0]}
-                  className={styles.iconeCategoria}
-                ></span>
-                <p className={styles.nomeCategoria}>{nome.split(' ')[0]}</p>
-                <span className={styles.percentual}>+ {percentual} %</span>
-                <span className={styles.ano}>// 2025</span>
-              </li>
-            ))
-          )}
+          {dadosComAcumulado.map(({ nome, acumulado }) => (
+            <li
+              key={nome.split(' ')[0]}
+              className={styles.cardCategoria}
+              id={nome.split(' ')[0]}
+            >
+              <span
+                data-categoria={nome.split(' ')[0]}
+                className={styles.iconeCategoria}
+              ></span>
+              <p className={styles.nomeCategoria}>{nome.split(' ')[0]}</p>
+              <span className={styles.percentual}>+ {acumulado} %</span>
+              <span className={styles.ano}>
+                // até {formatarPeriodo(ultimoPeriodo)}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
     </section>

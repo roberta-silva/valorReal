@@ -1,8 +1,7 @@
 const CATEGORIAS = ['7170', '7445', '7625', '7660', '7766'];
 
 async function getCategorias() {
-  const url =
-    'https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/202412/variaveis/2265?localidades=N1[all]&classificacao=315';
+  const url = `https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/-12/variaveis/2265?localidades=N1[all]&classificacao=315`;
   const res = await fetch(url);
   const dados = await res.json();
 
@@ -13,19 +12,23 @@ async function getCategorias() {
     })
     .map((item) => {
       const categoria = Object.values(item.classificacoes[0].categoria)[0];
-      const valor = Object.values(item.series[0].serie)[0];
+      const serie = item.series[0].serie;
+      const percentuais = Object.entries(serie).map(([periodo, valor]) => ({
+        periodo,
+        percentual: parseFloat(valor),
+      }));
       return {
         nome: categoria.replace(/^\d+\./, '').trim(),
-        percentual: parseFloat(valor),
+        percentuais,
       };
     });
 }
 const CATEGORIASANUAL = {
-  '7170': 'Alimentação e bebidas',
-  '7445': 'Habitação',
-  '7625': 'Transportes',
-  '7660': 'Saúde e cuidados pessoais',
-  '7766': 'Educação',
+  7170: 'Alimentação e bebidas',
+  7445: 'Habitação',
+  7625: 'Transportes',
+  7660: 'Saúde e cuidados pessoais',
+  7766: 'Educação',
 };
 
 async function getCategoriasAnual() {
