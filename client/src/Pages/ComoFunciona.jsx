@@ -1,13 +1,13 @@
 import styles from './ComoFunciona.module.css';
 const ComoFunciona = () => {
   return (
-    <section className={styles.comoFunciona}>
+    <section className={`${styles.comoFunciona} animar`}>
       <h1 className="titulos">Dados reais, em tempo real</h1>
       <p className="textos-info">
         Nada de números inventados. Tudo vem direto das APIs oficiais do governo
         brasileiro.
       </p>
-      <ul className={styles.cardsComoFunciona}>
+      <ul className={`${styles.cardsComoFunciona} animar`}>
         <li>
           <span>#01</span>Diga quanto gasta por mês em cada categoria:
           alimentação, transporte, saúde, habitação. Sem cadastro, sem dados

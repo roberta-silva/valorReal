@@ -71,7 +71,7 @@ const Categorias = () => {
   if (error) return <ErrorMessage message={error} />;
   if (loading) return <Loading />;
   return (
-    <section className={styles.categorias}>
+    <section className={`${styles.categorias} animar`}>
       <h1 className="titulos">Onde a inflação dói mais</h1>
       <p className="textos-info">
         Nem tudo sobe igual. Nos últimos 12 meses a maior inflação foi em{' '}
@@ -79,7 +79,7 @@ const Categorias = () => {
         categorias.
       </p>
       <div>
-        <ul>
+        <ul className='animar'>
           {dadosComAcumulado.map(({ nome, acumulado }) => (
             <li
               key={nome.split(' ')[0]}

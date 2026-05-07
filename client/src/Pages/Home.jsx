@@ -1,6 +1,7 @@
 import Button from '../Components/Button';
 import ErrorMessage from '../Components/Helper/Error';
 import { useIPCA } from '../Hooks/useIPCA';
+import useCountUp from '../Hooks/useCountUp';
 import styles from './Home.module.css';
 
 const Stat = ({ valor, rotulo }) => (
@@ -12,11 +13,11 @@ const Stat = ({ valor, rotulo }) => (
 
 const Home = () => {
   const { dados, error } = useIPCA();
+  const percentualAnimado = useCountUp(dados?.percentualFinal ?? null, 1400, 2);
 
   if (error) return <ErrorMessage message={error} />;
-
   return (
-    <section className={styles.home}>
+    <section className={`${styles.home} animar`}>
       <h1 className={styles.tituloHome}>
         Quanto vale o seu <br />
         <span className={styles.destaque}>dinheiro</span> de verdade?
@@ -27,8 +28,8 @@ const Home = () => {
       </p>
       <Button />
       <p className={styles.rotulo}>// Perda acumulada nos últimos 10 anos</p>
-      <p className={styles.resultado}>
-        -{dados ? dados.percentualFinal.toFixed(2) : '00.00'}%
+      <p className={`${styles.resultado} ${dados ? styles.animar : ''}`}>
+        -{dados ? percentualAnimado.toFixed(2) : '00.00'}%
       </p>
       <p className={styles.info}>
         <strong>R$ 1000</strong> guardados em {dados?.primeiroAno ?? '--'}{' '}

@@ -91,7 +91,7 @@ const Calculadora = () => {
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <section className={styles.calculadora}>
+    <section className={`${styles.calculadora} animar`}>
       <div className={styles.calculadoraInfo}>
         <h1 className="titulos">Qual é o tamanho do seu déficit?</h1>
         <p className="textos-info">
@@ -100,7 +100,7 @@ const Calculadora = () => {
         </p>
       </div>
       <div className={styles.calculadoraCards}>
-        <div className={styles.calculadoraEntrada}>
+        <div className={`${styles.calculadoraEntrada} animar`}>
           <p className={styles.rotulo}>// Entrada</p>
           <form>
             <div className={styles.groupForm}>
@@ -175,7 +175,7 @@ const Calculadora = () => {
             </div>
           </form>
         </div>
-        <div className={styles.calculadoraResultado}>
+        <div className={`${styles.calculadoraResultado} animar`}>
           <p className={styles.rotulo}>// Resultado</p>
           {loading || !resultado ? (
             <Loading height="29rem" />

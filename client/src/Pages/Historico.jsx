@@ -3,14 +3,14 @@ import styles from './Historico.module.css';
 
 const Historico = () => {
   return (
-    <section className={styles.historico}>
+    <section className={`${styles.historico} animar`}>
       <h1 className="titulos">IPCA ano a ano</h1>
       <p className="textos-info">
         (Índice Nacional de Preços ao Consumidor Amplo) <br/>
         Dados oficiais do Banco Central do Brasil. Atualizados automaticamente
         via API.
       </p>
-      <div className={styles.grafico}>
+      <div className={`${styles.grafico} animar`}>
         <HistoricoGraphs />
       </div>
       <div className={styles.legenda}>
