@@ -5,6 +5,7 @@
 body {
   margin: 0px;
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: 'Plus Jakarta Sans', sans-serif;
   --bg: #f7f8fa;
   --surface: #ffffff;
@@ -48,7 +49,7 @@ a {
   max-width: 90rem;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(140px, 200px) 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
     'header header'
     'sidenav content';
@@ -58,6 +59,13 @@ main {
   background: var(--surface);
   grid-area: content;
   margin-right: 1rem;
+}
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
 }
 .titulos {
   font-size: 3rem;
@@ -75,10 +83,43 @@ main {
   color: var(--muted);
 }
 @keyframes animacao {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
 .animar {
   animation: animacao 0.6s ease-out forwards;
+}
+
+/* responsivo */
+@media (max-width: 50rem) {
+  .estrutura {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'content'
+      'sidenav';
+  }
+  main {
+    margin: 0;
+  }
+  .conteudo {
+    height: auto;
+    padding: 1rem;
+    justify-content: flex-start;
+    padding-bottom: 8rem;
+  }
+  .titulos {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .textos-info {
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
 }

@@ -72,7 +72,7 @@ const Categorias = () => {
   if (error) return <ErrorMessage message={error} />;
   if (loading) return <Loading />;
   return (
-    <section className={`${styles.categorias} animar`}>
+    <section className={`${styles.categorias} conteudo animar`}>
       <Head
         title="Categorias"
         description="Inflação por categoria no Brasil: percentual acumulado nos últimos 12 meses segundo o IBGE, com destaque para habitação, alimentação, saúde, transporte e educação."

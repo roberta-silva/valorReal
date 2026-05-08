@@ -1,10 +1,5 @@
 .home {
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  height: 100%;
-  justify-content: center;
-  padding: 2rem;
 }
 .tituloHome {
   font-size: 3.6rem;
@@ -46,6 +41,7 @@
 }
 .cardsHome {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.25rem;
 }
 .cardHome {
@@ -73,4 +69,25 @@
 .cardHome:hover {
   transform: scale(1.1);
   border-color: var(--border2);
+}
+
+@media (max-width: 50rem) {
+  .tituloHome {
+    font-size: 2.5rem;
+  }
+  .resultado {
+    font-size: 3rem;
+  }
+  .info {
+    margin-bottom: 1.2rem;
+  }
+  .cardsHome {
+    gap: 0.75rem;
+  }
+  .cardHome {
+    padding: 0.75rem;
+  }
+  .cardHome span {
+    font-size: 1rem;
+  }
 }

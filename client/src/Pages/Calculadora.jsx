@@ -92,8 +92,11 @@ const Calculadora = () => {
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <section className={`${styles.calculadora} animar`}>
-      <Head title="Calculadora" description="Simule a inflação no seu orçamento. Descubra quanto você precisaria hoje para manter o mesmo poder de compra com base nos seus gastos mensais." />
+    <section className={`${styles.calculadora} conteudo animar`}>
+      <Head
+        title="Calculadora"
+        description="Simule a inflação no seu orçamento. Descubra quanto você precisaria hoje para manter o mesmo poder de compra com base nos seus gastos mensais."
+      />
       <div className={styles.calculadoraInfo}>
         <h1 className="titulos">Qual é o tamanho do seu déficit?</h1>
         <p className="textos-info">

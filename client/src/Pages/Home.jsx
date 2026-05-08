@@ -17,7 +17,7 @@ const Home = () => {
 
   if (error) return <ErrorMessage message={error} />;
   return (
-    <section className={`${styles.home} animar`}>
+    <section className={`${styles.home} conteudo animar`}>
       <h1 className={styles.tituloHome}>
         Quanto vale o seu <br />
         <span className={styles.destaque}>dinheiro</span> de verdade?

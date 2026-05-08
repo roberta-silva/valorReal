@@ -1,10 +1,4 @@
-.comoFunciona {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem;
-  height: 100%;
-}
+
 .cardsComoFunciona {
   display: flex;
   gap: 1rem;
@@ -36,4 +30,9 @@ border-color: var(--blue);
   color: var(--blue);
   background: var(--blue-light);
   border: 1px solid var(--blue-mid);
+}
+@media (max-width: 50rem) {
+  .cardsComoFunciona {
+    flex-direction: column;
+  }
 }
