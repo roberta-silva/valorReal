@@ -1,5 +1,15 @@
 const CATEGORIAS = ['7170', '7445', '7625', '7660', '7766'];
 
+const anoAtual = new Date().getFullYear();
+const anoInicio = anoAtual - 5;
+
+const anos = [];
+for (let ano = anoInicio; ano <= anoAtual; ano++) {
+  anos.push(`${ano}12`);
+}
+
+const periodos = anos.join('|');
+
 async function getCategorias() {
   const url = `https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/-12/variaveis/2265?localidades=N1[all]&classificacao=315`;
   const res = await fetch(url);
@@ -32,8 +42,7 @@ const CATEGORIASANUAL = {
 };
 
 async function getCategoriasAnual() {
-  const url =
-    'https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/202012|202112|202212|202312|202412/variaveis/2265?localidades=N1[all]&classificacao=315';
+  const url = `https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/${periodos}/variaveis/2265?localidades=N1[all]&classificacao=315`;
   const res = await fetch(url);
   const dados = await res.json();
 

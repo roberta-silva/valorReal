@@ -4,6 +4,7 @@ import styles from './Calculadora.module.css';
 import Loading from '../Components/Helper/Loading';
 import ErrorMessage from '../Components/Helper/Error';
 import Head from '../Components/Helper/Head';
+import Help from '../assets/help.svg?react';
 
 const PRODUTOS = [
   { nome: 'kg de arroz', preco: 6.5 },
@@ -18,11 +19,15 @@ const formatarMoeda = (valor) =>
     maximumFractionDigits: 0,
   });
 
+const anoAtual = new Date().getFullYear();
+const anoFim = anoAtual - 1;
+const anoInicio = anoFim - 5;
+
 const Calculadora = () => {
   const { dados, error, loading } = useCategorias();
   const [valores, setValores] = React.useState({
     gastoMensal: 500,
-    anoReferencia: 2020,
+    anoReferencia: anoInicio,
     projecao: 5,
   });
   const [categoria, setCategoria] = React.useState(['7170']);
@@ -33,8 +38,12 @@ const Calculadora = () => {
     const categoriasSelecionadas = categoria.map((id) =>
       dados.find((cat) => cat.id === id),
     );
+    const anosDisponiveis = [];
+    for (let ano = anoInicio; ano <= anoFim; ano++) {
+      anosDisponiveis.push(String(ano));
+    }
 
-    const anosFiltrados = ['2020', '2021', '2022', '2023', '2024'].filter(
+    const anosFiltrados = anosDisponiveis.filter(
       (ano) => ano >= String(valores.anoReferencia),
     );
 
@@ -53,15 +62,17 @@ const Calculadora = () => {
 
     const mediaPercentualUltimoAno =
       categoriasSelecionadas.reduce(
-        (acc, cat) => acc + (cat.series['2024'] || 0),
+        (acc, cat) => acc + (cat.series[String(anoFim)] || 0),
         0,
       ) / categoriasSelecionadas.length;
 
     let valorProjetado = valorHoje;
     let totalPerdaProjecao = 0;
+
     for (let i = 1; i <= valores.projecao; i++) {
+      const valorAnterior = valorProjetado;
       valorProjetado *= 1 + mediaPercentualUltimoAno / 100;
-      totalPerdaProjecao += Math.round(valorProjetado) - valorHoje;
+      totalPerdaProjecao += (Math.round(valorProjetado) - valorAnterior) * 12;
     }
 
     return {
@@ -73,6 +84,7 @@ const Calculadora = () => {
       equivalentes: PRODUTOS.map((p) => ({
         nome: p.nome,
         quantidade: Math.floor(diferenca / p.preco),
+        preco: p.preco.toFixed(2).replace('.', ','),
       })),
     };
   }, [dados, categoria, valores]);
@@ -150,8 +162,8 @@ const Calculadora = () => {
                 type="range"
                 id="anoReferencia"
                 name="anoReferencia"
-                min="2020"
-                max="2025"
+                min={anoInicio}
+                max={anoFim}
                 step="1"
                 value={valores.anoReferencia}
                 onChange={handleRange}
@@ -207,6 +219,12 @@ const Calculadora = () => {
                     você deixa de comprar{' '}
                     <span className={styles.tag}>
                       {item.quantidade} {item.nome}
+                    </span>
+                    <span className={styles.help}>
+                      <Help />
+                      <span className={styles.infoPrecos}>
+                        preço medio: R$ {item.preco}
+                      </span>
                     </span>
                   </li>
                 ))}
