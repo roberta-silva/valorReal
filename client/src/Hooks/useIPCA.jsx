@@ -4,14 +4,17 @@ import { fetchIPCAAnual } from '../Services/Api';
 export function useIPCA() {
   const [dados, setDados] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function buscar() {
       try {
         const resultado = await fetchIPCAAnual();
         setDados(resultado);
-      } catch (err){
+      } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
     buscar();
@@ -33,6 +36,7 @@ export function useIPCA() {
 
   return {
     error,
+    loading,
     dados: {
       percentualFinal: (acumulado - 1) * 100,
       poderCompraPassado: Math.round(1000 / acumulado),

@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { fetchIPCAAnual } from '../Services/api';
+import { fetchIPCAAnual } from '../Services/Api';
 import Loading from './Helper/Loading';
 import ErrorMessage from './Helper/Error';
 
